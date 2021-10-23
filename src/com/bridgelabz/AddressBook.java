@@ -1,21 +1,20 @@
 package com.bridgelabz;
-import java.util.ArrayList;
-import java.util.Iterator;
+
+import java.util.Scanner;
 import java.util.Scanner;
 
+public class AddressBook implements UsingInterfaceInAddressBook {
 
-public class AddressBook implements UsingInterfaceInAddressBook{
-
+    private final int PEOPLE = 5;
     Scanner scannerObject = new Scanner(System.in);
-    ArrayList <ContactsInAddressBook> contactList = new ArrayList<ContactsInAddressBook>();
+    ContactsInAddressBook[] contactList = new ContactsInAddressBook[PEOPLE];
+    public static int numberOfEntries = 0;
 
     @Override
     public void operation() {
 
-
-
         boolean moreChanges = true;
-        do{
+        do {
 
             System.out.println("\nChoose the operation you want to perform");
             System.out.println("1.Add To Address Book\n2.Edit Existing Entry\n3.Display Address book\n4.Delete Contact\n5.Exit Address book System");
@@ -40,48 +39,63 @@ public class AddressBook implements UsingInterfaceInAddressBook{
 
             }
 
-        }while(moreChanges);
+        } while (moreChanges);
     }
 
     @Override
     public void addContact() {
+        System.out.println("Enter number of people you want to add to Addres book");
+        int numberOfPeople = scannerObject.nextInt();
+        int endIterator = numberOfPeople + numberOfEntries;
 
-        ContactsInAddressBook person = new ContactsInAddressBook();
-        DetailsOfAddressBook address = new DetailsOfAddressBook();
+        if (endIterator > PEOPLE) {
+            System.out.println("Address Book is FULL !");
+            System.out.println("You can add: " + (PEOPLE - numberOfEntries));
+            return;
+        } else {
+
+            for (int index = numberOfEntries; index < endIterator; index++) {
+
+                ContactsInAddressBook person = new ContactsInAddressBook();
+                DetailsOfAddressBook address = new DetailsOfAddressBook();
+                System.out.println("Enter the details of Person " + (index + 1));
+
+                System.out.println("Enter First Name: ");
+                String firstName = scannerObject.next();
+
+                System.out.println("Enter Last Name: ");
+                String lastName = scannerObject.next();
+
+                System.out.println("Enter Phone Number: ");
+                long phoneNumber = scannerObject.nextLong();
+
+                System.out.println("Enter Email: ");
+                String email = scannerObject.next();
+
+                System.out.println("Enter City: ");
+                String city = scannerObject.next();
+
+                System.out.println("Enter State: ");
+                String state = scannerObject.next();
+
+                System.out.println("Enter Zip Code: ");
+                long zipCode = scannerObject.nextLong();
 
 
-        System.out.println("Enter First Name: ");
-        String firstName = scannerObject.next();
+                person.setFirstName(firstName);
+                person.setLastName(lastName);
+                person.setPhoneNumber(phoneNumber);
+                person.setEmail(email);
+                address.setCity(city);
+                address.setState(state);
+                address.setZip(zipCode);
+                person.setAddress(address);
+                contactList[index] = person;
+                numberOfEntries++;
 
-        System.out.println("Enter Last Name: ");
-        String lastName = scannerObject.next();
+            }
+        }
 
-        System.out.println("Enter Phone Number: ");
-        long phoneNumber = scannerObject.nextLong();
-
-        System.out.println("Enter Email: ");
-        String email = scannerObject.next();
-
-        System.out.println("Enter City: ");
-        String city = scannerObject.next();
-
-        System.out.println("Enter State: ");
-        String state = scannerObject.next();
-
-        System.out.println("Enter Zip Code: ");
-        long zipCode = scannerObject.nextLong();
-
-
-
-        person.setFirstName(firstName);
-        person.setLastName(lastName);
-        person.setPhoneNumber(phoneNumber);
-        person.setEmail(email);
-        address.setCity(city);
-        address.setState(state);
-        address.setZip(zipCode);
-        person.setAddress(address);
-        contactList.add(person);
 
     }
 
@@ -89,20 +103,19 @@ public class AddressBook implements UsingInterfaceInAddressBook{
 
         System.out.println("Enter the first name:");
         String firstName = scannerObject.next();
-        Iterator<ContactsInAddressBook> iterator = contactList.listIterator();
 
-        while(iterator.hasNext()) {
+        for (int index = 0; index < numberOfEntries; index++) {
 
-            ContactsInAddressBook person = iterator.next();
+            ContactsInAddressBook person = contactList[index];
 
-            if(firstName.equals(person.getFirstName()) ) {
+            if (firstName.equals(person.getFirstName())) {
 
                 DetailsOfAddressBook address = person.getAddress();
                 System.out.println("\nChoose the attribute you want to change:");
                 System.out.println("1.Last Name\n2.Phone Number\n3.Email\n4.City\n5.State\n6.ZipCode");
                 int choice = scannerObject.nextInt();
 
-                switch(choice) {
+                switch (choice) {
                     case 1:
                         System.out.println("Enter the correct Last Name :");
                         String lastName = scannerObject.next();
@@ -136,36 +149,42 @@ public class AddressBook implements UsingInterfaceInAddressBook{
                 }
 
             }
-        }
 
+        }
     }
+
 
     @Override
     public void deletePerson() {
 
         System.out.println("Enter the first name of the person to be deleted");
         String firstName = scannerObject.next();
-        Iterator<ContactsInAddressBook> iterator = contactList.listIterator();
 
-        while(iterator.hasNext()) {
+        for (int index = 0; index < numberOfEntries; index++) {
 
-            ContactsInAddressBook person = iterator.next();
+            ContactsInAddressBook person = contactList[index];
 
-            if(firstName.equals(person.getFirstName())) {
-                contactList.remove(person);
+            if (firstName.equals(person.getFirstName())) {
+
+                for (int nextIndex = index; nextIndex < contactList.length - 1; nextIndex++) {
+                    contactList[nextIndex] = contactList[nextIndex + 1];
+
+                }
+                numberOfEntries--;
                 return;
             }
+
         }
     }
 
     @Override
     public void displayContents() {
+        System.out.println(" Contents of the Address Book ");
+        for (int index = 0; index < numberOfEntries; index++) {
+            System.out.println(contactList[index]);
 
-        Iterator<ContactsInAddressBook> iterator = contactList.iterator();
-        while(iterator.hasNext()) {
-            System.out.println(iterator.next());
         }
 
-    }
 
+    }
 }
