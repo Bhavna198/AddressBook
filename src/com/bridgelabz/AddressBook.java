@@ -1,14 +1,23 @@
 package com.bridgelabz;
 
 import java.util.Scanner;
-import java.util.Scanner;
 
 public class AddressBook implements UsingInterfaceInAddressBook {
 
     private final int PEOPLE = 5;
+    public static int numberOfEntries = 0;
+    public String addressBookName;
+
     Scanner scannerObject = new Scanner(System.in);
     ContactsInAddressBook[] contactList = new ContactsInAddressBook[PEOPLE];
-    public static int numberOfEntries = 0;
+
+    public String getAddressBookName() {
+        return addressBookName;
+    }
+
+    public void setAddressBookName(String addressBookName) {
+        this.addressBookName = addressBookName;
+    }
 
     @Override
     public void operation() {
@@ -35,7 +44,6 @@ public class AddressBook implements UsingInterfaceInAddressBook {
                 case 5:
                     moreChanges = false;
                     System.out.println("BYE !");
-
 
             }
 
@@ -95,7 +103,6 @@ public class AddressBook implements UsingInterfaceInAddressBook {
 
             }
         }
-
 
     }
 
@@ -179,12 +186,18 @@ public class AddressBook implements UsingInterfaceInAddressBook {
 
     @Override
     public void displayContents() {
-        System.out.println(" Contents of the Address Book ");
+        System.out.println("----- Contents of the Address Book : " + addressBookName + " -----");
         for (int index = 0; index < numberOfEntries; index++) {
             System.out.println(contactList[index]);
 
         }
+        System.out.println("-----------------------------------------");
+
+    }
 
 
+    @Override
+    public String toString() {
+        return addressBookName;
     }
 }
