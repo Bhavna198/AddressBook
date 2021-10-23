@@ -195,9 +195,4 @@ public class AddressBook implements UsingInterfaceInAddressBook {
 
     }
 
-
-    @Override
-    public String toString() {
-        return addressBookName;
-    }
 }
